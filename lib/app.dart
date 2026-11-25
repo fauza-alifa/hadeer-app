@@ -14,7 +14,7 @@ class HadeerApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => MaterialApp(
-    title: 'hadeer App',
+    title: 'Hadeer',
     builder: (_, child) => Atmosphere(child: child!),
     debugShowCheckedModeBanner: false,
     theme: buildTheme(Brightness.light),
