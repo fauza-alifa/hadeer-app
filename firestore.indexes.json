@@ -1,0 +1,15 @@
+{
+  "indexes": [],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "evidence",
+      "fieldPath": "bytes",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "profile",
+      "fieldPath": "bytes",
+      "indexes": []
+    }
+  ]
+}
