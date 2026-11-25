@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:klock_app/app.dart';
-import 'package:klock_app/core/theme_provider.dart';
-import 'package:klock_app/features/auth/auth_providers.dart';
+import 'package:hadeer_app/app.dart';
+import 'package:hadeer_app/core/theme_provider.dart';
+import 'package:hadeer_app/features/auth/auth_providers.dart';
 
 import 'support/theme_fixture.dart';
 
@@ -15,7 +15,7 @@ void main() {
           themeProvider.overrideWith(TestTheme.new),
           sessionProvider.overrideWith((ref) => Stream.value(false)),
         ],
-        child: const KlockApp(),
+        child: const HadeerApp(),
       ),
     );
     await tester.pumpAndSettle();

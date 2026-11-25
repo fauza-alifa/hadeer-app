@@ -11,7 +11,7 @@ abstract final class CameraService {
       builder: (context) => AlertDialog(
         title: const Text('Pakai kamera depan, ya?'),
         content: const Text(
-          'Klock perlu akses kamera untuk foto wajahmu. Foto baru dikirim '
+          'Hadeer perlu akses kamera untuk foto wajahmu. Foto baru dikirim '
           'setelah kamu menekan tombol simpan. Tidak ada akses ke galeri atau mikrofon.',
         ),
         actions: [

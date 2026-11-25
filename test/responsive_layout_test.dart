@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:klock_app/app.dart';
-import 'package:klock_app/core/theme_provider.dart';
-import 'package:klock_app/features/auth/auth_providers.dart';
-import 'package:klock_app/features/attendance/presentation/providers.dart';
-import 'package:klock_app/features/profile/profile_repository.dart';
+import 'package:hadeer_app/app.dart';
+import 'package:hadeer_app/core/theme_provider.dart';
+import 'package:hadeer_app/features/auth/auth_providers.dart';
+import 'package:hadeer_app/features/attendance/presentation/providers.dart';
+import 'package:hadeer_app/features/profile/profile_repository.dart';
 
 import 'support/theme_fixture.dart';
 
@@ -29,7 +29,7 @@ void main() {
             avatarProvider.overrideWith((ref) => Stream.value(null)),
             attendanceProvider.overrideWith((ref) => Stream.value([])),
           ],
-          child: const KlockApp(),
+          child: const HadeerApp(),
         ),
       );
       await tester.pumpAndSettle();

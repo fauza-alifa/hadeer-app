@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:klock_app/features/attendance/domain/attendance_policy.dart';
+import 'package:hadeer_app/features/attendance/domain/attendance_policy.dart';
 
 void main() {
   test('Deadline uses WIB, accepts early arrivals and exact 07:00:00', () {

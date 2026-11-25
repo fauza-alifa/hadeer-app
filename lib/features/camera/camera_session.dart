@@ -41,7 +41,7 @@ class CameraSession extends ChangeNotifier with WidgetsBindingObserver {
     } on CameraException catch (e) {
       await next?.dispose();
       error = e.code.contains('Access')
-          ? 'Kamera belum diizinkan. Buka Pengaturan HP → Klock App → izinkan Kamera, lalu coba lagi.'
+          ? 'Kamera belum diizinkan. Buka Pengaturan HP → Hadeer App → izinkan Kamera, lalu coba lagi.'
           : 'Kamera belum bisa dibuka. Coba lagi, ya.';
     } catch (e) {
       await next?.dispose();

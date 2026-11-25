@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
-import 'package:klock_app/features/camera/front_lens.dart';
-import 'package:klock_app/features/camera/photo_codec.dart';
+import 'package:hadeer_app/features/camera/front_lens.dart';
+import 'package:hadeer_app/features/camera/photo_codec.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

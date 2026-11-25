@@ -1,4 +1,4 @@
-package id.sch.klock.klock_app
+package id.sch.hadeer.hadeer_app
 
 import io.flutter.embedding.android.FlutterActivity
 

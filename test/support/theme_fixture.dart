@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:klock_app/core/theme_provider.dart';
+import 'package:hadeer_app/core/theme_provider.dart';
 
 class TestTheme extends ThemePreference {
   @override

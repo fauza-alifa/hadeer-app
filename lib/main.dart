@@ -15,5 +15,5 @@ Future<void> main() async {
   } catch (error) {
     startupError = error;
   }
-  runApp(ProviderScope(child: KlockApp(startupError: startupError)));
+  runApp(ProviderScope(child: HadeerApp(startupError: startupError)));
 }

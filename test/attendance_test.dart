@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:klock_app/features/attendance/presentation/widgets/photo_preview.dart';
+import 'package:hadeer_app/features/attendance/presentation/widgets/photo_preview.dart';
 
 void main() {
   testWidgets('Missing photo shows capture placeholder', (tester) async {

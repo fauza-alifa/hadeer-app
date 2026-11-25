@@ -67,7 +67,7 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 22),
         Center(
           child: Text(
-            'klock  /  dibuat untuk hari sekolahmu',
+            'hadeer  /  dibuat untuk hari sekolahmu',
             style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
         ),

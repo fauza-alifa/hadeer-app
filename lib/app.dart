@@ -8,13 +8,13 @@ import 'features/auth/auth_providers.dart';
 import 'features/auth/login_page.dart';
 import 'features/attendance/presentation/shell.dart';
 
-class KlockApp extends ConsumerWidget {
-  const KlockApp({super.key, this.startupError});
+class HadeerApp extends ConsumerWidget {
+  const HadeerApp({super.key, this.startupError});
   final Object? startupError;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => MaterialApp(
-    title: 'Klock App',
+    title: 'hadeer App',
     builder: (_, child) => Atmosphere(child: child!),
     debugShowCheckedModeBanner: false,
     theme: buildTheme(Brightness.light),

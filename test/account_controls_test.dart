@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:klock_app/features/auth/login_fields.dart';
-import 'package:klock_app/features/profile/widgets/logout_button.dart';
-import 'package:klock_app/features/attendance/data/camera_service.dart';
+import 'package:hadeer_app/features/auth/login_fields.dart';
+import 'package:hadeer_app/features/profile/widgets/logout_button.dart';
+import 'package:hadeer_app/features/attendance/data/camera_service.dart';
 
 void main() {
   testWidgets('Eye toggles password visibility without changing its value', (tester) async {

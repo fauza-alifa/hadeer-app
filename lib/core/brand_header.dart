@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'klock_mark.dart';
+import 'hadeer_mark.dart';
 import 'theme_picker.dart';
 
 class BrandHeader extends StatelessWidget {
@@ -8,14 +8,14 @@ class BrandHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const Row(
     children: [
-      KlockMark(size: 36),
+      HadeerMark(size: 36),
       SizedBox(width: 10),
       Expanded(
         child: FittedBox(
           fit: BoxFit.scaleDown,
           alignment: Alignment.centerLeft,
           child: Text(
-            'klock',
+            'hadeer',
             style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, letterSpacing: -1),
           ),
         ),
