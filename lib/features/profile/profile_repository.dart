@@ -21,13 +21,11 @@ class ProfileRepository {
   DocumentReference<Map<String, dynamic>> get document =>
       db.collection('students').doc(uid).collection('profile').doc('photo');
   Stream<Uint8List?> watch() {
-    // TODO-F10: snapshots dokumen; null bila belum ada foto profil.
     return document.snapshots().map((doc) => (doc.data()?['bytes'] as Blob?)?.bytes);
   }
 
   Future<void> save(Uint8List bytes) async {
     if (bytes.isEmpty || bytes.length > 102400) throw StateError('Foto maksimal 100 KB.');
-    // TODO-F10: Simpan bytes sebagai Blob dan updatedAt sebagai serverTimestamp.
     await document.set({'bytes': Blob(bytes), 'updatedAt': FieldValue.serverTimestamp()});
   }
 }

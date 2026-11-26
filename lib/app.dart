@@ -26,7 +26,7 @@ class HadeerApp extends ConsumerWidget {
               child: Padding(
                 padding: EdgeInsets.all(32),
                 child: Text(
-                  'Firebase belum terhubung. Selesaikan TODO-F01; lihat docs/BRIEF-SISWA.pdf.',
+                  'Firebase belum terhubung.',
                 ),
               ),
             ),

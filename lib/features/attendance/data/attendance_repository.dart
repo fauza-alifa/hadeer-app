@@ -17,7 +17,6 @@ class FirestoreAttendanceRepository implements AttendanceRepository {
   CollectionReference<Map<String, dynamic>> get records =>
       db.collection('students').doc(uid).collection('attendance');
   @override
-  // TODO-F07: Urutkan createdAt desc, limit 60, snapshots, lalu map model.
   Stream<List<Attendance>> watch() => records
       .orderBy("createdAt", descending: true)
       .limit(60)
@@ -32,8 +31,6 @@ class FirestoreAttendanceRepository implements AttendanceRepository {
         'Foto harus berukuran maksimal 100 KB. Ambil ulang foto.',
       );
     }
-    // TODO-F08: Satu batch: metadata + evidence/photo + guards/daily.
-    // Gunakan serverTimestamp dan Blob. Commit sekali, bukan tiga set terpisah.
 
     // Rules that existed in firestore map will forced some report based on calendar jakarta will limit one request in a day
     final batch = db.batch();
@@ -57,7 +54,6 @@ class FirestoreAttendanceRepository implements AttendanceRepository {
 
   @override
   Future<Uint8List> photo(String id) async {
-    // TODO-F09: Ambil evidence/photo hanya untuk record yang diketuk.
     final doc = await records.doc(id).collection('evidence').doc('photo').get();
     return (doc.data()!['bytes'] as Blob).bytes;
   }
