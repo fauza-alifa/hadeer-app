@@ -6,6 +6,6 @@ class HadeerMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ClipRRect(
     borderRadius: BorderRadius.circular(size * .25),
-    child: Image.asset('assets/brand/klock.png', width: size, height: size, semanticLabel: 'hadeer'),
+    child: Image.asset('assets/brand/hadeer.png', width: size, height: size, semanticLabel: 'hadeer'),
   );
 }

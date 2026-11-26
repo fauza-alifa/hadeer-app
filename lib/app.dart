@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme.dart';
-import 'core/atmosphere.dart';
 import 'core/theme_provider.dart';
 import 'features/auth/auth_providers.dart';
 import 'features/auth/login_page.dart';
@@ -15,7 +14,6 @@ class HadeerApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => MaterialApp(
     title: 'Hadeer',
-    builder: (_, child) => Atmosphere(child: child!),
     debugShowCheckedModeBanner: false,
     theme: buildTheme(Brightness.light),
     darkTheme: buildTheme(Brightness.dark),

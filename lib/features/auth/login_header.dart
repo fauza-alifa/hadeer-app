@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../core/brand_header.dart';
-import '../../core/orbit_clock.dart';
 
 class LoginHeader extends StatelessWidget {
   const LoginHeader({super.key});
@@ -11,7 +10,6 @@ class LoginHeader extends StatelessWidget {
     children: [
       const BrandHeader(),
       const SizedBox(height: 20),
-      const Center(child: OrbitClock(size: 140)),
       const SizedBox(height: 14),
       const Text(
         'Absen dulu.\nBaru mulai cerita.',

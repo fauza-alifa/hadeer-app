@@ -7,34 +7,63 @@ import 'profile_photo.dart';
 
 class ProfileIdentity extends ConsumerWidget {
   const ProfileIdentity({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) => SurfaceCard(
-    child: Column(
-      children: [
-        const ProfilePhoto(),
-        const SizedBox(height: 12),
-        Text(
-          ref.watch(studentNameProvider),
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, letterSpacing: -.7),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: .1),
-            borderRadius: BorderRadius.circular(20),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final scheme = Theme.of(context).colorScheme;
+
+    final accentColor = isDark
+        ? const Color(0xFFA8C5A9)
+        : const Color(0xFF183D32);
+
+    final badgeColor = isDark
+        ? const Color(0xFF304B3D)
+        : const Color(0xFFE8EEE5);
+
+    return SurfaceCard(
+      padding: 22,
+      child: Column(
+        children: [
+          const ProfilePhoto(),
+
+          Text(
+            ref.watch(studentNameProvider),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 23,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.5,
+              color: scheme.onSurface,
+            ),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.school_outlined, size: 15, color: Theme.of(context).colorScheme.primary),
-              const SizedBox(width: 7),
-              const Text('Akun siswi', style: TextStyle(fontSize: 12)),
-            ],
+
+          const SizedBox(height: 10),
+
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
+            decoration: BoxDecoration(
+              color: badgeColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.school_outlined, size: 15, color: accentColor),
+                const SizedBox(width: 7),
+                Text(
+                  'Akun siswi',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: accentColor,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }

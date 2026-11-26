@@ -6,73 +6,116 @@ import '../../domain/attendance_policy.dart';
 
 class MonthSummary extends StatelessWidget {
   const MonthSummary({super.key, required this.items});
+
   final List<Attendance> items;
+
   @override
   Widget build(BuildContext context) {
     final confirmed = items.where((item) => item.createdAt != null).toList();
+
     final late = confirmed
-        .where((item) => AttendancePolicy.status(item.createdAt!) == AttendanceStatus.late)
+        .where(
+          (item) =>
+              AttendancePolicy.status(item.createdAt!) == AttendanceStatus.late,
+        )
         .length;
+
+    final onTime = confirmed.length - late;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: _tile(
                 context,
-                '${confirmed.length - late}',
-                'Tepat waktu',
-                Icons.check_rounded,
-                const Color(0xFF3B9E8B),
+                value: '$onTime',
+                label: 'Tepat waktu',
+                icon: Icons.check_rounded,
+                accent: const Color(0xFF78947B),
+                iconBackground: const Color(0xFFE8EEE5),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: _tile(
                 context,
-                '$late',
-                'Telat',
-                Icons.schedule_rounded,
-                const Color(0xFFD58B54),
+                value: '$late',
+                label: 'Telat',
+                icon: Icons.schedule_rounded,
+                accent: const Color(0xFFB77D55),
+                iconBackground: const Color(0xFFF3EAE2),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
+
+        const SizedBox(height: 10),
+
         Text(
           'Dari ${confirmed.length} absensi terakhir.',
-          style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
+          style: TextStyle(
+            fontSize: 11,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );
   }
 
-  Widget _tile(BuildContext context, String value, String label, IconData icon, Color color) =>
-      SurfaceCard(
-        padding: 18,
-        tint: color.withValues(alpha: .25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: .15),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: Theme.of(context).colorScheme.onSurface, size: 19),
+  Widget _tile(
+    BuildContext context, {
+    required String value,
+    required String label,
+    required IconData icon,
+    required Color accent,
+    required Color iconBackground,
+  }) {
+    final scheme = Theme.of(context).colorScheme;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+
+    return SurfaceCard(
+      padding: 16,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: dark ? accent.withValues(alpha: 0.16) : iconBackground,
+              borderRadius: BorderRadius.circular(11),
             ),
-            const SizedBox(height: 14),
-            Text(
-              value,
-              style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w700, letterSpacing: -1),
+            child: Icon(icon, color: dark ? accent : accent, size: 19),
+          ),
+
+          const SizedBox(height: 18),
+
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -1.2,
+              height: 1,
+              color: scheme.onSurface,
             ),
-            Text(
-              label,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12),
+          ),
+
+          const SizedBox(height: 6),
+
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: scheme.onSurfaceVariant,
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }

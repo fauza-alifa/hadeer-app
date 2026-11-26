@@ -6,40 +6,73 @@ import '../profile_repository.dart';
 
 class ProfilePhoto extends ConsumerStatefulWidget {
   const ProfilePhoto({super.key});
+
   @override
   ConsumerState<ProfilePhoto> createState() => _ProfilePhotoState();
 }
 
 class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
   bool busy = false;
+
   Future<void> change() async {
     setState(() => busy = true);
+
     try {
       final photo = await CameraService.capture(context);
+
       if (photo == null || !mounted) return;
+
       final save = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Pakai foto ini?'),
-          content: ClipRRect(borderRadius: BorderRadius.circular(12), child: Image.memory(photo)),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Batal')),
-            TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Simpan')),
-          ],
-        ),
+        builder: (context) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+
+          return AlertDialog(
+            backgroundColor: isDark
+                ? const Color(0xFF1B332B)
+                : const Color(0xFFFAFBF9),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+            title: const Text(
+              'Pakai foto ini?',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            ),
+            content: ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: Image.memory(photo, fit: BoxFit.cover),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Batal'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Simpan'),
+              ),
+            ],
+          );
+        },
       );
+
       if (save != true || !mounted) return;
+
       await ref.read(profileRepositoryProvider).save(photo);
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Foto profil belum tersimpan. Cek koneksi, lalu coba lagi.'),
+            content: Text(
+              'Foto profil belum tersimpan. Cek koneksi, lalu coba lagi.',
+            ),
           ),
         );
       }
     } finally {
-      if (mounted) setState(() => busy = false);
+      if (mounted) {
+        setState(() => busy = false);
+      }
     }
   }
 
@@ -47,44 +80,75 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
   Widget build(BuildContext context) {
     final avatar = ref.watch(avatarProvider);
     final bytes = avatar.asData?.value;
+
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final scheme = Theme.of(context).colorScheme;
+
+    final borderColor = isDark
+        ? const Color(0xFF53675B)
+        : const Color(0xFFD5DED2);
+
+    final avatarBackground = isDark
+        ? const Color(0xFF263F33)
+        : const Color(0xFFE8EEE5);
+
+    final accentColor = isDark
+        ? const Color(0xFFA8C5A9)
+        : const Color(0xFF183D32);
+
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [
-                Theme.of(context).colorScheme.primary.withValues(alpha: .65),
-                const Color(0xFF8BD8CA),
-                const Color(0xFFF2C3B4),
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).colorScheme.primary.withValues(alpha: .18),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
-              ),
-            ],
+            border: Border.all(color: borderColor, width: 2),
           ),
           child: CircleAvatar(
             radius: 46,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            backgroundColor: avatarBackground,
             backgroundImage: bytes == null ? null : MemoryImage(bytes),
-            child: bytes == null ? const Icon(Icons.person_outline, size: 42) : null,
+            child: bytes == null
+                ? Icon(
+                    Icons.person_outline_rounded,
+                    size: 42,
+                    color: accentColor,
+                  )
+                : null,
           ),
         ),
-        const SizedBox(height: 8),
+
+        const SizedBox(height: 10),
+
         TextButton.icon(
           onPressed: busy || avatar.isLoading ? null : change,
-          icon: const Icon(Icons.camera_alt_outlined, size: 18),
-          label: Text(busy ? 'Menyimpan…' : 'Ganti foto'),
+          style: TextButton.styleFrom(
+            foregroundColor: accentColor,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          icon: busy
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Icon(Icons.camera_alt_outlined, size: 17),
+          label: Text(
+            busy ? 'Menyimpan…' : 'Ganti foto',
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+          ),
         ),
+
         if (avatar.hasError)
           TextButton(
             onPressed: () => ref.invalidate(avatarProvider),
-            child: const Text('Foto gagal dimuat · Coba lagi'),
+            child: Text(
+              'Foto gagal dimuat · Coba lagi',
+              style: TextStyle(fontSize: 11, color: scheme.error),
+            ),
           ),
       ],
     );
