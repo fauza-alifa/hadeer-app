@@ -172,20 +172,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  Widget _buildBrandAccent(ColorScheme scheme) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        width: 42,
-        height: 4,
-        decoration: BoxDecoration(
-          color: scheme.primary,
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
-
   Widget _buildErrorMessage(ColorScheme scheme) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
