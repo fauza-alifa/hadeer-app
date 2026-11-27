@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import '../../../core/surface_card.dart';
 import '../domain/attendance.dart';
 import '../domain/attendance_policy.dart';
+import '../domain/attendance_day_status.dart';
+import '../domain/school_calendar.dart';
 import 'providers.dart';
 import 'widgets/history_tile.dart';
 
@@ -18,6 +20,10 @@ class CalendarPage extends ConsumerStatefulWidget {
 class _CalendarPageState extends ConsumerState<CalendarPage> {
   late DateTime selectedMonth;
   late DateTime selectedDate;
+
+  static const Color onTimeColor = Color(0xFF78947B);
+  static const Color lateColor = Color(0xFFB77D55);
+  static const Color absentColor = Color(0xFFA6534D);
 
   @override
   void initState() {
@@ -51,10 +57,27 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     });
   }
 
+  AttendanceDayStatus _getDateStatus({
+    required DateTime date,
+    required List<Attendance> records,
+    required DateTime now,
+  }) {
+    final dayRecords = AttendanceCalendarUtils.recordsForDate(records, date);
+
+    final record = dayRecords.isNotEmpty ? dayRecords.first : null;
+
+    return AttendanceDayStatusResolver.resolve(
+      date: date,
+      now: now,
+      attendanceTime: record?.createdAt,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final dark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final dark = theme.brightness == Brightness.dark;
 
     final attendanceAsync = ref.watch(monthlyAttendanceProvider(monthKey));
 
@@ -62,13 +85,10 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
     final forest = dark ? const Color(0xFFA8C5A9) : const Color(0xFF183D32);
 
-    const onTimeColor = Color(0xFF78947B);
-    const lateColor = Color(0xFFB77D55);
-
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: theme.scaffoldBackgroundColor,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         title: const Text(
@@ -119,16 +139,16 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
                 const SizedBox(height: 18),
 
-                // Weekday labels
+                // Weekday labels: Sunday first
                 const Row(
                   children: [
+                    _WeekdayLabel('Min'),
                     _WeekdayLabel('Sen'),
                     _WeekdayLabel('Sel'),
                     _WeekdayLabel('Rab'),
                     _WeekdayLabel('Kam'),
                     _WeekdayLabel('Jum'),
                     _WeekdayLabel('Sab'),
-                    _WeekdayLabel('Min'),
                   ],
                 ),
 
@@ -141,8 +161,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                       records: records,
                       today: today,
                       forest: forest,
-                      onTimeColor: onTimeColor,
-                      lateColor: lateColor,
                     );
                   },
                   loading: () => const SizedBox(
@@ -186,6 +204,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                   children: const [
                     _LegendItem(color: onTimeColor, label: 'Tepat waktu'),
                     _LegendItem(color: lateColor, label: 'Terlambat'),
+                    _LegendItem(color: absentColor, label: 'Tidak masuk'),
                   ],
                 ),
               ],
@@ -223,44 +242,21 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 selectedDate,
               );
 
-              if (selectedRecords.isEmpty) {
-                return SurfaceCard(
-                  padding: 24,
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.event_available_outlined,
-                        size: 38,
-                        color: scheme.onSurfaceVariant,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'Belum ada catatan absensi.',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: scheme.onSurface,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Tidak ditemukan data absensi pada tanggal ini.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: scheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
-                  ),
+              final status = _getDateStatus(
+                date: selectedDate,
+                records: records,
+                now: DateTime.now(),
+              );
+
+              if (selectedRecords.isNotEmpty) {
+                return Column(
+                  children: selectedRecords
+                      .map((record) => HistoryTile(record: record))
+                      .toList(),
                 );
               }
 
-              return Column(
-                children: selectedRecords
-                    .map((record) => HistoryTile(record: record))
-                    .toList(),
-              );
+              return _buildEmptyDateDetail(status);
             },
             loading: () => const Center(
               child: Padding(
@@ -279,8 +275,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     required List<Attendance> records,
     required DateTime today,
     required Color forest,
-    required Color onTimeColor,
-    required Color lateColor,
   }) {
     final daysInMonth = DateTime(
       selectedMonth.year,
@@ -288,7 +282,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       0,
     ).day;
 
-    final firstDayOffset = AttendanceCalendarUtils.mondayFirstOffset(
+    // Sunday first:
+    // Sunday = 0, Monday = 1, ..., Saturday = 6.
+    final firstDayOffset = AttendanceCalendarUtils.sundayFirstOffset(
       selectedMonth,
     );
 
@@ -311,18 +307,17 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
         final date = DateTime(selectedMonth.year, selectedMonth.month, day);
 
-        final dayRecords = AttendanceCalendarUtils.recordsForDate(
-          records,
-          date,
+        final status = _getDateStatus(
+          date: date,
+          records: records,
+          now: DateTime.now(),
         );
 
-        final hasAttendance = dayRecords.isNotEmpty;
-        final record = hasAttendance ? dayRecords.first : null;
+        final hasAttendance =
+            status == AttendanceDayStatus.onTime ||
+            status == AttendanceDayStatus.late;
 
-        final isLate =
-            record?.createdAt != null &&
-            AttendancePolicy.status(record!.createdAt!) ==
-                AttendanceStatus.late;
+        final isAbsent = status == AttendanceDayStatus.absent;
 
         final isSelected =
             selectedDate.year == date.year &&
@@ -338,13 +333,18 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
         if (isSelected) {
           backgroundColor = forest;
-        } else if (hasAttendance) {
-          backgroundColor = isLate ? lateColor : onTimeColor;
         } else {
-          backgroundColor = Colors.transparent;
+          backgroundColor = switch (status) {
+            AttendanceDayStatus.onTime => onTimeColor,
+            AttendanceDayStatus.late => lateColor,
+            AttendanceDayStatus.absent => absentColor,
+            _ => Colors.transparent,
+          };
         }
 
-        final textColor = isSelected || hasAttendance
+        final hasStatusColor = hasAttendance || isAbsent;
+
+        final textColor = isSelected || hasStatusColor
             ? Colors.white
             : Theme.of(context).colorScheme.onSurface;
 
@@ -359,7 +359,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               decoration: BoxDecoration(
                 color: backgroundColor,
                 borderRadius: BorderRadius.circular(12),
-
                 border: isToday ? Border.all(color: forest, width: 2) : null,
               ),
               alignment: Alignment.center,
@@ -367,7 +366,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 '$day',
                 style: TextStyle(
                   fontSize: 13,
-                  fontWeight: isSelected || isToday || hasAttendance
+                  fontWeight: isSelected || isToday || hasStatusColor
                       ? FontWeight.w700
                       : FontWeight.w500,
                   color: textColor,
@@ -377,6 +376,77 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildEmptyDateDetail(AttendanceDayStatus status) {
+    final scheme = Theme.of(context).colorScheme;
+
+    final String title;
+    final String description;
+    final IconData icon;
+    final Color iconColor;
+
+    switch (status) {
+      case AttendanceDayStatus.absent:
+        title = 'Tidak masuk';
+        description = 'Tidak ada catatan kehadiran pada tanggal ini.';
+        icon = Icons.event_busy_outlined;
+        iconColor = absentColor;
+
+      case AttendanceDayStatus.holiday:
+        title = 'Hari libur';
+        description = 'Tanggal ini termasuk dalam daftar hari libur sekolah.';
+        icon = Icons.celebration_outlined;
+        iconColor = scheme.onSurfaceVariant;
+
+      case AttendanceDayStatus.weekend:
+        title = 'Akhir pekan';
+        description = 'Tidak ada kegiatan sekolah pada hari ini.';
+        icon = Icons.weekend_outlined;
+        iconColor = scheme.onSurfaceVariant;
+
+      case AttendanceDayStatus.upcoming:
+        title = 'Belum ada catatan absensi';
+        description = 'Belum ada data kehadiran pada tanggal ini.';
+        icon = Icons.event_available_outlined;
+        iconColor = scheme.onSurfaceVariant;
+
+      case AttendanceDayStatus.onTime:
+      case AttendanceDayStatus.late:
+        title = 'Belum ada catatan absensi';
+        description = 'Tidak ditemukan data absensi pada tanggal ini.';
+        icon = Icons.event_available_outlined;
+        iconColor = scheme.onSurfaceVariant;
+    }
+
+    return SurfaceCard(
+      padding: 24,
+      child: Column(
+        children: [
+          Icon(icon, size: 38, color: iconColor),
+          const SizedBox(height: 12),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: scheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 11,
+              height: 1.5,
+              color: scheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -438,11 +508,21 @@ class _LegendItem extends StatelessWidget {
 abstract final class AttendanceCalendarUtils {
   static String monthKey(DateTime month) {
     final monthString = month.month.toString().padLeft(2, '0');
+
     return '${month.year}-$monthString';
   }
 
-  static int mondayFirstOffset(DateTime month) {
-    return DateTime(month.year, month.month, 1).weekday - 1;
+  /// Menghitung offset dengan Minggu sebagai hari pertama.
+  ///
+  /// Sunday = 0
+  /// Monday = 1
+  /// Tuesday = 2
+  /// Wednesday = 3
+  /// Thursday = 4
+  /// Friday = 5
+  /// Saturday = 6
+  static int sundayFirstOffset(DateTime month) {
+    return DateTime(month.year, month.month, 1).weekday % 7;
   }
 
   static DateTime wibDate(DateTime instant) {
