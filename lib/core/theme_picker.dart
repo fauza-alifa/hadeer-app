@@ -5,81 +5,120 @@ import 'theme_provider.dart';
 
 class ThemePicker extends ConsumerWidget {
   const ThemePicker({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = ref.watch(themeProvider).asData?.value ?? ThemeMode.system;
+
     final scheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: scheme.surface.withValues(alpha: .55),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: scheme.outlineVariant.withValues(alpha: .4)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final mode in [ThemeMode.light, ThemeMode.system, ThemeMode.dark])
-            Tooltip(
-              message: _label(mode),
-              child: Semantics(
-                button: true,
-                selected: selected == mode,
-                label: _label(mode),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(24),
-                  onTap: () async {
-                    try {
-                      await ref.read(themeProvider.notifier).setMode(mode);
-                    } catch (_) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Tampilan belum tersimpan. Coba lagi, ya.')),
-                        );
-                      }
-                    }
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 280),
-                    curve: Curves.easeOutCubic,
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      color: selected == mode ? scheme.primary : Colors.transparent,
-                      boxShadow: selected == mode
-                          ? [
-                              BoxShadow(
-                                color: scheme.primary.withValues(alpha: .25),
-                                blurRadius: 12,
-                                offset: const Offset(0, 3),
-                              ),
-                            ]
-                          : [],
-                    ),
-                    child: AnimatedRotation(
-                      turns: selected == mode ? 0 : -.08,
-                      duration: const Duration(milliseconds: 350),
-                      child: Icon(
-                        _icon(mode),
-                        size: 19,
-                        color: selected == mode ? scheme.onPrimary : scheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
-                ),
+
+    return PopupMenuButton<ThemeMode>(
+      tooltip: 'Pilih tema',
+      initialValue: selected,
+      onSelected: (mode) async {
+        try {
+          await ref.read(themeProvider.notifier).setMode(mode);
+        } catch (_) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Tampilan belum tersimpan. Coba lagi, ya.'),
               ),
-            ),
-        ],
+            );
+          }
+        }
+      },
+      offset: const Offset(0, 48),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: scheme.surface,
+      elevation: 4,
+      itemBuilder: (context) => [
+        _buildMenuItem(
+          mode: ThemeMode.light,
+          selected: selected,
+          icon: Icons.wb_sunny_outlined,
+          label: 'Terang',
+        ),
+        _buildMenuItem(
+          mode: ThemeMode.system,
+          selected: selected,
+          icon: Icons.phone_android_rounded,
+          label: 'Ikuti HP',
+        ),
+        _buildMenuItem(
+          mode: ThemeMode.dark,
+          selected: selected,
+          icon: Icons.nightlight_outlined,
+          label: 'Gelap',
+        ),
+      ],
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: scheme.surfaceContainerHighest.withValues(alpha: .55),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: scheme.outlineVariant.withValues(alpha: .4),
+          ),
+        ),
+        child: Icon(_icon(selected), size: 20, color: scheme.onSurface),
       ),
     );
   }
 
-  String _label(ThemeMode mode) => switch (mode) {
-    ThemeMode.system => 'Ikuti HP',
-    ThemeMode.light => 'Terang',
-    ThemeMode.dark => 'Gelap',
-  };
+  PopupMenuItem<ThemeMode> _buildMenuItem({
+    required ThemeMode mode,
+    required ThemeMode selected,
+    required IconData icon,
+    required String label,
+  }) {
+    final isSelected = selected == mode;
+
+    return PopupMenuItem<ThemeMode>(
+      value: mode,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Builder(
+        builder: (context) {
+          final scheme = Theme.of(context).colorScheme;
+
+          return Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? scheme.primary.withValues(alpha: .12)
+                      : scheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  icon,
+                  size: 18,
+                  color: isSelected ? scheme.primary : scheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                    color: scheme.onSurface,
+                  ),
+                ),
+              ),
+              if (isSelected)
+                Icon(Icons.check_rounded, size: 18, color: scheme.primary),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
   IconData _icon(ThemeMode mode) => switch (mode) {
     ThemeMode.system => Icons.phone_android_rounded,
     ThemeMode.light => Icons.wb_sunny_outlined,

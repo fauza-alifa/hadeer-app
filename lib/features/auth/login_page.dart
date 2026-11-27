@@ -63,116 +63,149 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
+      backgroundColor: scheme.surface,
       body: EnterMotion(
         child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 400),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Login Header
-                    const LoginHeader(),
-
-                    const SizedBox(height: 28),
-
-                    // Login Form
-                    SurfaceCard(
-                      padding: 18,
-                      child: LoginFields(email: email, password: password),
-                    ),
-
-                    // Error Message
-                    if (error != null) ...[
-                      const SizedBox(height: 14),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: scheme.error.withValues(alpha: 0.07),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.info_outline_rounded,
-                              size: 18,
-                              color: scheme.error,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                error!,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  height: 1.4,
-                                  color: scheme.error,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-
-                    const SizedBox(height: 18),
-
-                    // Login Button
-                    SizedBox(
-                      height: 54,
-                      child: FilledButton(
-                        onPressed: busy ? null : login,
-                        style: FilledButton.styleFrom(
-                          backgroundColor: scheme.primary,
-                          foregroundColor: scheme.onPrimary,
-                          disabledBackgroundColor:
-                              scheme.surfaceContainerHighest,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
-                        child: busy
-                            ? SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: scheme.onPrimary,
-                                ),
-                              )
-                            : const Text(
-                                'Masuk',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 22),
-
-                    // Registration Information
-                    Text(
-                      'Belum punya akun? Minta ke admin sekolah, ya.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12,
-                        height: 1.5,
-                        color: scheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 28,
                 ),
-              ),
-            ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight - 56,
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 420),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Login Header
+                          const LoginHeader(),
+
+                          const SizedBox(height: 8),
+
+                          // Login Form
+                          SurfaceCard(
+                            padding: 20,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                LoginFields(email: email, password: password),
+
+                                // Error Message
+                                if (error != null) ...[
+                                  const SizedBox(height: 16),
+                                  _buildErrorMessage(scheme),
+                                ],
+
+                                const SizedBox(height: 20),
+
+                                // Login Button
+                                SizedBox(
+                                  height: 52,
+                                  child: OutlinedButton(
+                                    onPressed: busy ? null : login,
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: scheme.primary,
+                                      disabledForegroundColor:
+                                          scheme.onSurfaceVariant,
+                                      side: BorderSide(
+                                        color: busy
+                                            ? scheme.outlineVariant
+                                            : scheme.primary,
+                                        width: 1.2,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(13),
+                                      ),
+                                    ),
+                                    child: busy
+                                        ? SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: scheme.primary,
+                                            ),
+                                          )
+                                        : const Text(
+                                            'Masuk',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w700,
+                                              letterSpacing: 0.2,
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // Registration Information
+                          Text(
+                            'Belum punya akun? Minta ke admin sekolah, ya.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              height: 1.6,
+                              color: scheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildBrandAccent(ColorScheme scheme) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: 42,
+        height: 4,
+        decoration: BoxDecoration(
+          color: scheme.primary,
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorMessage(ColorScheme scheme) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
+      decoration: BoxDecoration(
+        color: scheme.error.withValues(alpha: 0.07),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: scheme.error.withValues(alpha: 0.16)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.info_outline_rounded, size: 18, color: scheme.error),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              error!,
+              style: TextStyle(fontSize: 12, height: 1.5, color: scheme.error),
+            ),
+          ),
+        ],
       ),
     );
   }

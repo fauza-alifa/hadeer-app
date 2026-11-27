@@ -1,31 +1,70 @@
 import 'package:flutter/material.dart';
-
-import '../../core/brand_header.dart';
+import 'package:hadeer_app/core/hadeer_mark.dart';
 
 class LoginHeader extends StatelessWidget {
   const LoginHeader({super.key});
+
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const BrandHeader(),
-      const SizedBox(height: 20),
-      const SizedBox(height: 14),
-      const Text(
-        'Absen dulu.\nBaru mulai cerita.',
-        style: TextStyle(
-          fontSize: 34,
-          fontWeight: FontWeight.w800,
-          height: 1.12,
-          letterSpacing: -1.5,
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Hadeer Logo and Brand Name
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Hadeer Logo
+            const HadeerMark(size: 76),
+
+            const SizedBox(height: 12),
+
+            // Brand Name
+            Text(
+              'hadeer',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -1.2,
+                color: scheme.onSurface,
+              ),
+            ),
+          ],
         ),
-      ),
-      const SizedBox(height: 14),
-      Text(
-        'Satu foto, beres. Masuk pakai akun sekolahmu, ya.',
-        style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, height: 1.6),
-      ),
-      const SizedBox(height: 24),
-    ],
-  );
+
+        const SizedBox(height: 32),
+
+        // Welcome Title
+        Text(
+          'Selamat datang.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w800,
+            height: 1.15,
+            letterSpacing: -1.2,
+            color: scheme.onSurface,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        // Description
+        Text(
+          'Masuk untuk mencatat kehadiranmu hari ini.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 13,
+            height: 1.6,
+            color: scheme.onSurfaceVariant,
+          ),
+        ),
+
+        const SizedBox(height: 28),
+      ],
+    );
+  }
 }
