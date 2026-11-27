@@ -37,7 +37,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     final today = AttendancePolicy.wib(DateTime.now());
     final currentMonth = DateTime(today.year, today.month);
 
-    // Tidak mengizinkan navigasi ke bulan yang akan datang.
     if (newMonth.isAfter(currentMonth)) return;
 
     setState(() {
@@ -63,8 +62,8 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
     final forest = dark ? const Color(0xFFA8C5A9) : const Color(0xFF183D32);
 
-    final onTimeColor = const Color(0xFF78947B);
-    final lateColor = const Color(0xFFB77D55);
+    const onTimeColor = Color(0xFF78947B);
+    const lateColor = Color(0xFFB77D55);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -78,13 +77,13 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 28),
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 56),
         children: [
-          // Month navigation
           SurfaceCard(
             padding: 18,
             child: Column(
               children: [
+                // Month navigation
                 Row(
                   children: [
                     IconButton(
@@ -92,7 +91,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                       tooltip: 'Bulan sebelumnya',
                       icon: const Icon(Icons.chevron_left_rounded),
                     ),
-
                     Expanded(
                       child: Center(
                         child: Text(
@@ -105,7 +103,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                         ),
                       ),
                     ),
-
                     IconButton(
                       onPressed:
                           DateTime(
@@ -186,7 +183,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                   alignment: WrapAlignment.center,
                   spacing: 18,
                   runSpacing: 10,
-                  children: [
+                  children: const [
                     _LegendItem(color: onTimeColor, label: 'Tepat waktu'),
                     _LegendItem(color: lateColor, label: 'Terlambat'),
                   ],
@@ -303,7 +300,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       itemCount: totalCells,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
-        childAspectRatio: 0.9,
+        mainAxisExtent: 52,
       ),
       itemBuilder: (context, index) {
         if (index < firstDayOffset) {
@@ -320,19 +317,12 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         );
 
         final hasAttendance = dayRecords.isNotEmpty;
-
         final record = hasAttendance ? dayRecords.first : null;
 
         final isLate =
             record?.createdAt != null &&
             AttendancePolicy.status(record!.createdAt!) ==
                 AttendanceStatus.late;
-
-        final markerColor = !hasAttendance
-            ? Colors.transparent
-            : isLate
-            ? lateColor
-            : onTimeColor;
 
         final isSelected =
             selectedDate.year == date.year &&
@@ -344,50 +334,46 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
             today.month == date.month &&
             today.day == date.day;
 
+        final Color backgroundColor;
+
+        if (isSelected) {
+          backgroundColor = forest;
+        } else if (hasAttendance) {
+          backgroundColor = isLate ? lateColor : onTimeColor;
+        } else {
+          backgroundColor = Colors.transparent;
+        }
+
+        final textColor = isSelected || hasAttendance
+            ? Colors.white
+            : Theme.of(context).colorScheme.onSurface;
+
         return InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () => _selectDate(date),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 160),
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: isSelected ? forest : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                  border: isToday && !isSelected
-                      ? Border.all(color: forest, width: 1.3)
-                      : null,
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  '$day',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: isSelected || isToday
-                        ? FontWeight.w700
-                        : FontWeight.w500,
-                    color: isSelected
-                        ? Colors.white
-                        : Theme.of(context).colorScheme.onSurface,
-                  ),
+          child: Center(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                borderRadius: BorderRadius.circular(12),
+
+                border: isToday ? Border.all(color: forest, width: 2) : null,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                '$day',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: isSelected || isToday || hasAttendance
+                      ? FontWeight.w700
+                      : FontWeight.w500,
+                  color: textColor,
                 ),
               ),
-
-              const SizedBox(height: 4),
-
-              // Attendance marker
-              Container(
-                width: 5,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: markerColor,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ],
+            ),
           ),
         );
       },
@@ -429,9 +415,12 @@ class _LegendItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 7,
-          height: 7,
-          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          width: 9,
+          height: 9,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(3),
+          ),
         ),
         const SizedBox(width: 7),
         Text(
