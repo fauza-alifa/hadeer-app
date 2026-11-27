@@ -48,9 +48,9 @@ class CheckInCard extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Align(
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: Text(
-            'ATTENDANCE',
+            'KEHADIRAN',
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w700,

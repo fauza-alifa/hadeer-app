@@ -17,22 +17,23 @@ class ClockCard extends ConsumerWidget {
       ref.watch(clockProvider).asData?.value ?? DateTime.now(),
     );
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final scheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final accentColor = isDark
         ? const Color(0xFFA8C5A9)
         : const Color(0xFF183D32);
 
     return SurfaceCard(
-      padding: 20,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Date
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.calendar_today_rounded, size: 15, color: accentColor),
+              Icon(Icons.calendar_today_rounded, size: 14, color: accentColor),
               const SizedBox(width: 8),
               Text(
                 DateFormat('EEEE, d MMMM yyyy', 'id').format(now),
@@ -45,22 +46,22 @@ class ClockCard extends ConsumerWidget {
             ],
           ),
 
-          const SizedBox(height: 18),
+          const SizedBox(height: 22),
 
-          // Clock
+          // Centered Clock
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Expanded(
+              Flexible(
                 child: FittedBox(
-                  alignment: Alignment.centerLeft,
                   fit: BoxFit.scaleDown,
                   child: Text(
                     DateFormat('HH:mm').format(now),
                     style: TextStyle(
-                      fontSize: 58,
+                      fontSize: 64,
                       fontWeight: FontWeight.w700,
-                      letterSpacing: -2.5,
+                      letterSpacing: -3,
                       height: 1,
                       color: scheme.onSurface,
                       fontFeatures: const [FontFeature.tabularFigures()],
@@ -68,10 +69,11 @@ class ClockCard extends ConsumerWidget {
                   ),
                 ),
               ),
+
               Padding(
-                padding: const EdgeInsets.only(left: 5, bottom: 5),
+                padding: const EdgeInsets.only(left: 5, bottom: 7),
                 child: Text(
-                  DateFormat(':ss').format(now),
+                  DateFormat('ss').format(now),
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.w500,
@@ -83,50 +85,41 @@ class ClockCard extends ConsumerWidget {
             ],
           ),
 
-          const SizedBox(height: 18),
+          const SizedBox(height: 20),
 
-          // Attendance information
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF263F33) : const Color(0xFFE8EEE5),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.schedule_rounded, size: 17, color: accentColor),
-                const SizedBox(width: 9),
-                Expanded(
-                  child: Text(
-                    'Jam masuk 07.00 WIB',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: accentColor,
-                    ),
-                  ),
+          // Divider
+          Divider(
+            height: 1,
+            thickness: 1,
+            color: scheme.outlineVariant.withValues(alpha: 0.5),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Attendance Schedule
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.schedule_rounded, size: 17, color: accentColor),
+              const SizedBox(width: 8),
+              Text(
+                'Jam masuk',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: scheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w500,
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: accentColor.withValues(alpha: 0.10),
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                  child: Text(
-                    'WIB',
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5,
-                      color: accentColor,
-                    ),
-                  ),
+              ),
+              const SizedBox(width: 5),
+              Text(
+                '07.00 WIB',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: accentColor,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

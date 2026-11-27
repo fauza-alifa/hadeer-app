@@ -6,7 +6,6 @@ import '../../../core/surface_card.dart';
 import '../domain/attendance.dart';
 import '../domain/attendance_policy.dart';
 import '../domain/attendance_day_status.dart';
-import '../domain/school_calendar.dart';
 import 'providers.dart';
 import 'widgets/history_tile.dart';
 

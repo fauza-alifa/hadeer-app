@@ -75,7 +75,7 @@ class HistoryPage extends ConsumerWidget {
                               Text('Belum ada absensi.'),
                               SizedBox(height: 8),
                               Text(
-                                'Kalau sudah di sekolah, absen lewat Beranda, ya.',
+                                'Kalau sudah di sekolah, absen lewat Beranda.',
                                 style: TextStyle(),
                               ),
                             ],

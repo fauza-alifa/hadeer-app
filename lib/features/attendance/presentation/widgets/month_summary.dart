@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/surface_card.dart';
 import '../../domain/attendance.dart';
 import '../../domain/attendance_policy.dart';
+import '../../domain/school_calendar.dart';
 
 class MonthSummary extends StatelessWidget {
   const MonthSummary({super.key, required this.items});
@@ -11,111 +11,147 @@ class MonthSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final confirmed = items.where((item) => item.createdAt != null).toList();
+    final now = AttendancePolicy.wib(DateTime.now());
 
-    final late = confirmed
-        .where(
-          (item) =>
-              AttendancePolicy.status(item.createdAt!) == AttendanceStatus.late,
-        )
+    // Rentang 30 hari terakhir, termasuk hari ini.
+    final today = DateTime(now.year, now.month, now.day);
+    final startDate = today.subtract(const Duration(days: 29));
+
+    // Simpan satu status absensi untuk setiap tanggal.
+    final attendanceByDay = <String, AttendanceStatus>{};
+
+    for (final item in items) {
+      final createdAt = item.createdAt;
+
+      if (createdAt == null) continue;
+
+      final wibTime = AttendancePolicy.wib(createdAt);
+      final attendanceDate = DateTime(wibTime.year, wibTime.month, wibTime.day);
+
+      if (attendanceDate.isBefore(startDate) || attendanceDate.isAfter(today)) {
+        continue;
+      }
+
+      final key = SchoolCalendar.dateKey(attendanceDate);
+
+      attendanceByDay.putIfAbsent(key, () => AttendancePolicy.status(wibTime));
+    }
+
+    final onTime = attendanceByDay.values
+        .where((status) => status == AttendanceStatus.onTime)
         .length;
 
-    final onTime = confirmed.length - late;
+    final late = attendanceByDay.values
+        .where((status) => status == AttendanceStatus.late)
+        .length;
+
+    // Hitung hari sekolah yang sudah berlalu tanpa absensi.
+    int absent = 0;
+
+    for (
+      DateTime date = startDate;
+      date.isBefore(today);
+      date = date.add(const Duration(days: 1))
+    ) {
+      if (!SchoolCalendar.isSchoolDay(date)) continue;
+
+      final key = SchoolCalendar.dateKey(date);
+
+      if (!attendanceByDay.containsKey(key)) {
+        absent++;
+      }
+    }
+
+    final scheme = Theme.of(context).colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: _tile(
-                context,
-                value: '$onTime',
-                label: 'Tepat waktu',
-                icon: Icons.check_rounded,
-                accent: const Color(0xFF78947B),
-                iconBackground: const Color(0xFFE8EEE5),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _tile(
-                context,
-                value: '$late',
-                label: 'Telat',
-                icon: Icons.schedule_rounded,
-                accent: const Color(0xFFB77D55),
-                iconBackground: const Color(0xFFF3EAE2),
-              ),
-            ),
-          ],
+        // Heading
+        Text(
+          'CATATANMU',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.4,
+            color: scheme.onSurfaceVariant,
+          ),
         ),
 
-        const SizedBox(height: 10),
+        const SizedBox(height: 48),
 
-        Text(
-          'Dari ${confirmed.length} absensi terakhir.',
-          style: TextStyle(
-            fontSize: 11,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+        // Summary
+        _summaryRow(
+          context,
+          icon: Icons.check_circle_outline_rounded,
+          label: 'Tepat waktu',
+          value: onTime,
+          accent: const Color(0xFF78947B),
+        ),
+
+        const SizedBox(height: 13),
+
+        _summaryRow(
+          context,
+          icon: Icons.schedule_rounded,
+          label: 'Telat',
+          value: late,
+          accent: const Color(0xFFB77D55),
+        ),
+
+        const SizedBox(height: 13),
+
+        _summaryRow(
+          context,
+          icon: Icons.cancel_outlined,
+          label: 'Absen',
+          value: absent,
+          accent: const Color(0xFFA6534D),
         ),
       ],
     );
   }
 
-  Widget _tile(
+  Widget _summaryRow(
     BuildContext context, {
-    required String value,
-    required String label,
     required IconData icon,
+    required String label,
+    required int value,
     required Color accent,
-    required Color iconBackground,
   }) {
     final scheme = Theme.of(context).colorScheme;
-    final dark = Theme.of(context).brightness == Brightness.dark;
 
-    return SurfaceCard(
-      padding: 16,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: dark ? accent.withValues(alpha: 0.16) : iconBackground,
-              borderRadius: BorderRadius.circular(11),
-            ),
-            child: Icon(icon, color: dark ? accent : accent, size: 19),
-          ),
+    return Row(
+      children: [
+        Icon(icon, size: 17, color: accent),
 
-          const SizedBox(height: 18),
+        const SizedBox(width: 7),
 
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.w700,
-              letterSpacing: -1.2,
-              height: 1,
-              color: scheme.onSurface,
-            ),
-          ),
-
-          const SizedBox(height: 6),
-
-          Text(
+        Expanded(
+          child: Text(
             label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: FontWeight.w500,
               color: scheme.onSurfaceVariant,
             ),
           ),
-        ],
-      ),
+        ),
+
+        const SizedBox(width: 4),
+
+        Text(
+          '$value',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: scheme.onSurface,
+            height: 1,
+          ),
+        ),
+      ],
     );
   }
 }
