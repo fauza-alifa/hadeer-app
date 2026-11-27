@@ -10,14 +10,24 @@ import '../domain/attendance.dart';
 
 final repositoryProvider = Provider.autoDispose<AttendanceRepository>((ref) {
   ref.watch(sessionProvider);
+
   return FirestoreAttendanceRepository(
     FirebaseFirestore.instance,
     FirebaseAuth.instance.currentUser!.uid,
   );
 });
+
 final attendanceProvider = StreamProvider.autoDispose<List<Attendance>>(
   (ref) => ref.watch(repositoryProvider).watch(),
 );
+
+final monthlyAttendanceProvider = StreamProvider.autoDispose
+    .family<List<Attendance>, String>((ref, monthKey) {
+      final month = DateTime.parse('$monthKey-01');
+
+      return ref.watch(repositoryProvider).watchByMonth(month);
+    });
+
 final photoProvider = FutureProvider.autoDispose.family<Uint8List, String>(
   (ref, id) => ref.watch(repositoryProvider).photo(id),
 );
