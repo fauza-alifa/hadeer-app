@@ -31,11 +31,11 @@ class _FrontCameraPageState extends State<FrontCameraPage> {
     builder: (context, _) => PopScope(
       canPop: !session.busy,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Kamera depan')),
+        appBar: AppBar(title: Text('Kamera depan')),
         body: SafeArea(
           child: Column(
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(20),
                 child: Text('Posisikan wajahmu di tengah. Cari tempat yang cukup terang, ya.'),
               ),
@@ -50,21 +50,21 @@ class _FrontCameraPageState extends State<FrontCameraPage> {
                         )
                       : session.error != null
                       ? Padding(
-                          padding: const EdgeInsets.all(24),
+                          padding: EdgeInsets.all(24),
                           child: Text(session.error!, textAlign: TextAlign.center),
                         )
-                      : const CircularProgressIndicator(),
+                      : CircularProgressIndicator(),
                 ),
               ),
               if (session.error != null && session.controller != null)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Text(session.error!),
                 ),
               Padding(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 child: session.error != null
-                    ? OutlinedButton(onPressed: session.open, child: const Text('Coba lagi'))
+                    ? OutlinedButton(onPressed: session.open, child: Text('Coba lagi'))
                     : FilledButton.icon(
                         onPressed: session.busy || session.controller == null
                             ? null
@@ -72,7 +72,7 @@ class _FrontCameraPageState extends State<FrontCameraPage> {
                                 final Uint8List? bytes = await session.take();
                                 if (context.mounted && bytes != null) Navigator.pop(context, bytes);
                               },
-                        icon: const Icon(Icons.camera_alt_outlined),
+                        icon: Icon(Icons.camera_alt_outlined),
                         label: Text(session.busy ? 'Sebentar…' : 'Ambil foto'),
                       ),
               ),

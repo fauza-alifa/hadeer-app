@@ -31,7 +31,7 @@ class _LoginFieldsState extends State<LoginFields> {
           controller: widget.email,
           keyboardType: TextInputType.emailAddress,
           autocorrect: false,
-          autofillHints: const [AutofillHints.email],
+          autofillHints: [AutofillHints.email],
           textInputAction: TextInputAction.next,
           style: TextStyle(
             color: scheme.onSurface,
@@ -48,7 +48,7 @@ class _LoginFieldsState extends State<LoginFields> {
             ),
             filled: true,
             fillColor: scheme.surface.withValues(alpha: 0.65),
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding: EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 17,
             ),
@@ -61,7 +61,7 @@ class _LoginFieldsState extends State<LoginFields> {
           ),
         ),
 
-        const SizedBox(height: 13),
+        SizedBox(height: 13),
 
         // Password field
         TextField(
@@ -69,7 +69,7 @@ class _LoginFieldsState extends State<LoginFields> {
           obscureText: hidden,
           autocorrect: false,
           enableSuggestions: false,
-          autofillHints: const [AutofillHints.password],
+          autofillHints: [AutofillHints.password],
           textInputAction: TextInputAction.done,
           style: TextStyle(
             color: scheme.onSurface,
@@ -99,7 +99,7 @@ class _LoginFieldsState extends State<LoginFields> {
             ),
             filled: true,
             fillColor: scheme.surface.withValues(alpha: 0.65),
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding: EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 17,
             ),

@@ -22,8 +22,8 @@ class ClockCard extends ConsumerWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     final accentColor = isDark
-        ? const Color(0xFFA8C5A9)
-        : const Color(0xFF183D32);
+        ? Color(0xFFA8C5A9)
+        : Color(0xFF183D32);
 
     return SurfaceCard(
       child: Column(
@@ -34,7 +34,7 @@ class ClockCard extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.calendar_today_rounded, size: 14, color: accentColor),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Text(
                 DateFormat('EEEE, d MMMM yyyy', 'id').format(now),
                 style: TextStyle(
@@ -46,7 +46,7 @@ class ClockCard extends ConsumerWidget {
             ],
           ),
 
-          const SizedBox(height: 22),
+          SizedBox(height: 22),
 
           // Centered Clock
           Row(
@@ -64,28 +64,28 @@ class ClockCard extends ConsumerWidget {
                       letterSpacing: -3,
                       height: 1,
                       color: scheme.onSurface,
-                      fontFeatures: const [FontFeature.tabularFigures()],
+                      fontFeatures: [FontFeature.tabularFigures()],
                     ),
                   ),
                 ),
               ),
 
               Padding(
-                padding: const EdgeInsets.only(left: 5, bottom: 7),
+                padding: EdgeInsets.only(left: 5, bottom: 7),
                 child: Text(
                   DateFormat('ss').format(now),
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.w500,
                     color: scheme.onSurfaceVariant,
-                    fontFeatures: const [FontFeature.tabularFigures()],
+                    fontFeatures: [FontFeature.tabularFigures()],
                   ),
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
           // Divider
           Divider(
@@ -94,14 +94,14 @@ class ClockCard extends ConsumerWidget {
             color: scheme.outlineVariant.withValues(alpha: 0.5),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
 
           // Attendance Schedule
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.schedule_rounded, size: 17, color: accentColor),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Text(
                 'Jam masuk',
                 style: TextStyle(
@@ -110,7 +110,7 @@ class ClockCard extends ConsumerWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(width: 5),
+              SizedBox(width: 5),
               Text(
                 '07.00 WIB',
                 style: TextStyle(

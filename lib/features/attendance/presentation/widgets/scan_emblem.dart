@@ -8,16 +8,16 @@ class ScanEmblem extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final primaryColor = isDark
-        ? const Color(0xFFA8C5A9)
-        : const Color(0xFF183D32);
+        ? Color(0xFFA8C5A9)
+        : Color(0xFF183D32);
 
     final backgroundColor = isDark
-        ? const Color(0xFF263F33)
-        : const Color(0xFFE8EEE5);
+        ? Color(0xFF263F33)
+        : Color(0xFFE8EEE5);
 
     final borderColor = isDark
-        ? const Color(0xFF53675B)
-        : const Color(0xFFD5DED2);
+        ? Color(0xFF53675B)
+        : Color(0xFFD5DED2);
 
     return SizedBox(
       width: 96,
@@ -49,16 +49,16 @@ class ScanEmblem extends StatelessWidget {
               width: 27,
               height: 27,
               decoration: BoxDecoration(
-                color: const Color(0xFF78947B),
+                color: Color(0xFF78947B),
                 borderRadius: BorderRadius.circular(9),
                 border: Border.all(
                   color: isDark
-                      ? const Color(0xFF1B332B)
-                      : const Color(0xFFFAFBF9),
+                      ? Color(0xFF1B332B)
+                      : Color(0xFFFAFBF9),
                   width: 2,
                 ),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.check_rounded,
                 size: 17,
                 color: Colors.white,
@@ -84,7 +84,7 @@ class ScanEmblem extends StatelessWidget {
               width: 5,
               height: 5,
               decoration: BoxDecoration(
-                color: const Color(0xFF78947B),
+                color: Color(0xFF78947B),
                 shape: BoxShape.circle,
               ),
             ),

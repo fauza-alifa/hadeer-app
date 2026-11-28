@@ -11,9 +11,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => EnterMotion(
     child: ListView(
-      padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+      padding: EdgeInsets.fromLTRB(24, 20, 24, 24),
       children: [
-        const Row(
+        Row(
           children: [
             Expanded(
               child: Text(
@@ -24,28 +24,28 @@ class ProfilePage extends StatelessWidget {
             ThemePicker(),
           ],
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
           'Biar lebih kenal, pasang foto terbaikmu.',
           style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
-        const SizedBox(height: 26),
-        const ProfileIdentity(),
-        const SizedBox(height: 20),
+        SizedBox(height: 26),
+        ProfileIdentity(),
+        SizedBox(height: 20),
         SurfaceCard(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary.withValues(alpha: .1),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(Icons.shield_outlined, size: 23),
+                child: Icon(Icons.shield_outlined, size: 23),
               ),
-              const SizedBox(width: 14),
-              const Expanded(
+              SizedBox(width: 14),
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -62,9 +62,9 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 24),
-        const LogoutButton(),
-        const SizedBox(height: 22),
+        SizedBox(height: 24),
+        LogoutButton(),
+        SizedBox(height: 22),
         Center(
           child: Text(
             'hadeer  /  dibuat untuk hari sekolahmu',

@@ -20,21 +20,20 @@ class SurfaceCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
-        color:
-            tint ?? (dark ? const Color(0xFF1B332B) : const Color(0xFFFAFBF9)),
+        color: tint ?? (dark ? Color(0xFF1B332B) : Color(0xFFFAFBF9)),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: dark
-              ? const Color(0xFF53675B).withValues(alpha: 0.2)
-              : const Color(0xFFE9ECE7).withValues(alpha: 0.8),
+              ? Color(0xFF53675B).withValues(alpha: 0.2)
+              : Color(0xFFE9ECE7).withValues(alpha: 0.8),
         ),
         boxShadow: [
           BoxShadow(
             color: dark
                 ? Colors.black.withValues(alpha: 0.10)
-                : const Color(0xFF263A30).withValues(alpha: 0.045),
+                : Color(0xFF263A30).withValues(alpha: 0.045),
             blurRadius: 16,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
       ),

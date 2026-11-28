@@ -69,7 +69,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: 24,
                   vertical: 28,
                 ),
@@ -79,15 +79,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   child: Center(
                     child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 420),
+                      constraints: BoxConstraints(maxWidth: 420),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           // Login Header
-                          const LoginHeader(),
+                          LoginHeader(),
 
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
 
                           // Login Form
                           SurfaceCard(
@@ -99,11 +99,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
                                 // Error Message
                                 if (error != null) ...[
-                                  const SizedBox(height: 16),
+                                  SizedBox(height: 16),
                                   _buildErrorMessage(scheme),
                                 ],
 
-                                const SizedBox(height: 20),
+                                SizedBox(height: 20),
 
                                 // Login Button
                                 SizedBox(
@@ -133,7 +133,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                               color: scheme.primary,
                                             ),
                                           )
-                                        : const Text(
+                                        : Text(
                                             'Masuk',
                                             style: TextStyle(
                                               fontSize: 14,
@@ -147,7 +147,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                           ),
 
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
 
                           // Registration Information
                           Text(
@@ -174,7 +174,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Widget _buildErrorMessage(ColorScheme scheme) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: 13, vertical: 12),
       decoration: BoxDecoration(
         color: scheme.error.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(12),
@@ -184,7 +184,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(Icons.info_outline_rounded, size: 18, color: scheme.error),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           Expanded(
             child: Text(
               error!,

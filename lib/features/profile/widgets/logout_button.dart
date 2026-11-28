@@ -14,13 +14,13 @@ class _LogoutButtonState extends State<LogoutButton> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Mau keluar akun?'),
-        content: const Text('Absensimu tetap tersimpan. Kamu bisa masuk lagi kapan saja.'),
+        title: Text('Mau keluar akun?'),
+        content: Text('Absensimu tetap tersimpan. Kamu bisa masuk lagi kapan saja.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Batal')),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text('Batal')),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Ya, keluar'),
+            child: Text('Ya, keluar'),
           ),
         ],
       ),
@@ -32,7 +32,7 @@ class _LogoutButtonState extends State<LogoutButton> {
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Belum bisa keluar. Coba lagi, ya.')));
+            .showSnackBar(SnackBar(content: Text('Belum bisa keluar. Coba lagi, ya.')));
       }
     } finally {
       if (mounted) setState(() => busy = false);
@@ -42,7 +42,7 @@ class _LogoutButtonState extends State<LogoutButton> {
   @override
   Widget build(BuildContext context) => OutlinedButton.icon(
     onPressed: busy ? null : logout,
-    icon: const Icon(Icons.logout),
+    icon: Icon(Icons.logout),
     label: Text(busy ? 'Sebentar…' : 'Keluar akun'),
   );
 }

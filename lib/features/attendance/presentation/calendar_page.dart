@@ -20,9 +20,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   late DateTime selectedMonth;
   late DateTime selectedDate;
 
-  static const Color onTimeColor = Color(0xFF78947B);
-  static const Color lateColor = Color(0xFFB77D55);
-  static const Color absentColor = Color(0xFFA6534D);
+  static Color onTimeColor = Color(0xFF78947B);
+  static Color lateColor = Color(0xFFB77D55);
+  static Color absentColor = Color(0xFFA6534D);
 
   @override
   void initState() {
@@ -82,7 +82,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
     final today = AttendancePolicy.wib(DateTime.now());
 
-    final forest = dark ? const Color(0xFFA8C5A9) : const Color(0xFF183D32);
+    final forest = dark ? Color(0xFFA8C5A9) : Color(0xFF183D32);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -90,13 +90,13 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         backgroundColor: theme.scaffoldBackgroundColor,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Kalender absensi',
           style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 56),
+        padding: EdgeInsets.fromLTRB(24, 8, 24, 56),
         children: [
           SurfaceCard(
             padding: 18,
@@ -108,7 +108,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                     IconButton(
                       onPressed: () => _changeMonth(-1),
                       tooltip: 'Bulan sebelumnya',
-                      icon: const Icon(Icons.chevron_left_rounded),
+                      icon: Icon(Icons.chevron_left_rounded),
                     ),
                     Expanded(
                       child: Center(
@@ -131,15 +131,15 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                           ? null
                           : () => _changeMonth(1),
                       tooltip: 'Bulan berikutnya',
-                      icon: const Icon(Icons.chevron_right_rounded),
+                      icon: Icon(Icons.chevron_right_rounded),
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 18),
+                SizedBox(height: 18),
 
                 // Weekday labels: Sunday first
-                const Row(
+                Row(
                   children: [
                     _WeekdayLabel('Min'),
                     _WeekdayLabel('Sen'),
@@ -151,7 +151,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                   ],
                 ),
 
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
 
                 // Calendar grid
                 attendanceAsync.when(
@@ -162,7 +162,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                       forest: forest,
                     );
                   },
-                  loading: () => const SizedBox(
+                  loading: () => SizedBox(
                     height: 220,
                     child: Center(child: CircularProgressIndicator()),
                   ),
@@ -177,15 +177,15 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                             size: 30,
                             color: scheme.onSurfaceVariant,
                           ),
-                          const SizedBox(height: 10),
-                          const Text('Gagal memuat kalender.'),
+                          SizedBox(height: 10),
+                          Text('Gagal memuat kalender.'),
                           TextButton(
                             onPressed: () {
                               ref.invalidate(
                                 monthlyAttendanceProvider(monthKey),
                               );
                             },
-                            child: const Text('Coba lagi'),
+                            child: Text('Coba lagi'),
                           ),
                         ],
                       ),
@@ -193,14 +193,14 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 // Calendar legend
                 Wrap(
                   alignment: WrapAlignment.center,
                   spacing: 18,
                   runSpacing: 10,
-                  children: const [
+                  children: [
                     _LegendItem(color: onTimeColor, label: 'Tepat waktu'),
                     _LegendItem(color: lateColor, label: 'Terlambat'),
                     _LegendItem(color: absentColor, label: 'Tidak masuk'),
@@ -210,7 +210,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
             ),
           ),
 
-          const SizedBox(height: 22),
+          SizedBox(height: 22),
 
           // Selected date details
           Row(
@@ -232,7 +232,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
             ],
           ),
 
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
 
           attendanceAsync.when(
             data: (records) {
@@ -257,13 +257,13 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
               return _buildEmptyDateDetail(status);
             },
-            loading: () => const Center(
+            loading: () => Center(
               child: Padding(
                 padding: EdgeInsets.all(24),
                 child: CircularProgressIndicator(),
               ),
             ),
-            error: (_, _) => const SizedBox.shrink(),
+            error: (_, _) => SizedBox.shrink(),
           ),
         ],
       ),
@@ -291,15 +291,15 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
     return GridView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       itemCount: totalCells,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
         mainAxisExtent: 52,
       ),
       itemBuilder: (context, index) {
         if (index < firstDayOffset) {
-          return const SizedBox.shrink();
+          return SizedBox.shrink();
         }
 
         final day = index - firstDayOffset + 1;
@@ -352,7 +352,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           onTap: () => _selectDate(date),
           child: Center(
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
+              duration: Duration(milliseconds: 180),
               width: 36,
               height: 36,
               decoration: BoxDecoration(
@@ -424,7 +424,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       child: Column(
         children: [
           Icon(icon, size: 38, color: iconColor),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(
             title,
             textAlign: TextAlign.center,
@@ -434,7 +434,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               color: scheme.onSurface,
             ),
           ),
-          const SizedBox(height: 5),
+          SizedBox(height: 5),
           Text(
             description,
             textAlign: TextAlign.center,
@@ -451,7 +451,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 }
 
 class _WeekdayLabel extends StatelessWidget {
-  const _WeekdayLabel(this.label);
+  _WeekdayLabel(this.label);
 
   final String label;
 
@@ -473,7 +473,7 @@ class _WeekdayLabel extends StatelessWidget {
 }
 
 class _LegendItem extends StatelessWidget {
-  const _LegendItem({required this.color, required this.label});
+  _LegendItem({required this.color, required this.label});
 
   final Color color;
   final String label;
@@ -491,7 +491,7 @@ class _LegendItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(3),
           ),
         ),
-        const SizedBox(width: 7),
+        SizedBox(width: 7),
         Text(
           label,
           style: TextStyle(

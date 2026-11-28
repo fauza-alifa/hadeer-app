@@ -18,7 +18,7 @@ class HistoryPage extends ConsumerWidget {
 
   void _openCalendar(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute<void>(builder: (_) => const CalendarPage()));
+        .push(MaterialPageRoute<void>(builder: (_) => CalendarPage()));
   }
 
   @override
@@ -27,14 +27,14 @@ class HistoryPage extends ConsumerWidget {
 
     return EnterMotion(
       child: ListView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         children: [
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
 
           // Header
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
                   'Jejak hadir',
                   style: TextStyle(
@@ -48,24 +48,24 @@ class HistoryPage extends ConsumerWidget {
               IconButton(
                 onPressed: () => _openCalendar(context),
                 tooltip: 'Lihat kalender absensi',
-                icon: const Icon(Icons.calendar_month_rounded),
+                icon: Icon(Icons.calendar_month_rounded),
                 iconSize: 24,
               ),
 
-              const SizedBox(width: 4),
+              SizedBox(width: 4),
 
-              const ThemePicker(),
+              ThemePicker(),
             ],
           ),
 
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
 
           Text(
             'Perjalanan dan catatan kehadiranmu.',
             style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13),
           ),
 
-          const SizedBox(height: 26),
+          SizedBox(height: 26),
 
           // Attendance data
           ref
@@ -86,12 +86,12 @@ class HistoryPage extends ConsumerWidget {
                         absent: stats.absent,
                       ),
 
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30),
 
                       // Timeline heading
                       Row(
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: Text(
                               'Riwayat terbaru',
                               style: TextStyle(
@@ -112,7 +112,7 @@ class HistoryPage extends ConsumerWidget {
                         ],
                       ),
 
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
                       if (items.isEmpty)
                         _emptyState(context)
@@ -127,7 +127,7 @@ class HistoryPage extends ConsumerWidget {
                   );
                 },
 
-                loading: () => const Padding(
+                loading: () => Padding(
                   padding: EdgeInsets.symmetric(vertical: 48),
                   child: Center(child: CircularProgressIndicator()),
                 ),
@@ -135,13 +135,13 @@ class HistoryPage extends ConsumerWidget {
                 error: (_, _) => Center(
                   child: Column(
                     children: [
-                      const Text('Riwayat belum bisa dimuat.'),
-                      const SizedBox(height: 8),
+                      Text('Riwayat belum bisa dimuat.'),
+                      SizedBox(height: 8),
                       TextButton(
                         onPressed: () {
                           ref.invalidate(attendanceProvider);
                         },
-                        child: const Text('Coba lagi'),
+                        child: Text('Coba lagi'),
                       ),
                     ],
                   ),
@@ -158,7 +158,7 @@ class HistoryPage extends ConsumerWidget {
 
     final today = DateTime(now.year, now.month, now.day);
 
-    final startDate = today.subtract(const Duration(days: 29));
+    final startDate = today.subtract(Duration(days: 29));
 
     final attendanceByDay = <String, AttendanceStatus>{};
 
@@ -193,7 +193,7 @@ class HistoryPage extends ConsumerWidget {
     for (
       DateTime date = startDate;
       date.isBefore(today);
-      date = date.add(const Duration(days: 1))
+      date = date.add(Duration(days: 1))
     ) {
       if (!SchoolCalendar.isSchoolDay(date)) continue;
 
@@ -231,16 +231,16 @@ class HistoryPage extends ConsumerWidget {
     final scheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 56),
+      padding: EdgeInsets.symmetric(vertical: 56),
       child: Column(
         children: [
           Icon(Icons.history_rounded, size: 52, color: scheme.onSurfaceVariant),
-          const SizedBox(height: 16),
-          const Text(
+          SizedBox(height: 16),
+          Text(
             'Belum ada absensi.',
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             'Kalau sudah di sekolah, absen lewat Beranda.',
             textAlign: TextAlign.center,
@@ -257,7 +257,7 @@ class HistoryPage extends ConsumerWidget {
 // --------------------------------------------------
 
 class _AttendanceStats {
-  const _AttendanceStats({
+  _AttendanceStats({
     required this.onTime,
     required this.late,
     required this.absent,
@@ -269,7 +269,7 @@ class _AttendanceStats {
 }
 
 class _AttendanceDashboard extends StatelessWidget {
-  const _AttendanceDashboard({
+  _AttendanceDashboard({
     required this.onTime,
     required this.late,
     required this.absent,
@@ -302,7 +302,7 @@ class _AttendanceDashboard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
           Row(
             children: [
@@ -311,7 +311,7 @@ class _AttendanceDashboard extends StatelessWidget {
                   label: 'Tepat waktu',
                   value: onTime,
                   icon: Icons.check_circle_outline_rounded,
-                  color: const Color(0xFF78947B),
+                  color: Color(0xFF78947B),
                 ),
               ),
               Expanded(
@@ -319,7 +319,7 @@ class _AttendanceDashboard extends StatelessWidget {
                   label: 'Telat',
                   value: late,
                   icon: Icons.schedule_rounded,
-                  color: const Color(0xFFB77D55),
+                  color: Color(0xFFB77D55),
                 ),
               ),
               Expanded(
@@ -327,7 +327,7 @@ class _AttendanceDashboard extends StatelessWidget {
                   label: 'Absen',
                   value: absent,
                   icon: Icons.cancel_outlined,
-                  color: const Color(0xFFA6534D),
+                  color: Color(0xFFA6534D),
                 ),
               ),
             ],
@@ -339,7 +339,7 @@ class _AttendanceDashboard extends StatelessWidget {
 }
 
 class _StatItem extends StatelessWidget {
-  const _StatItem({
+  _StatItem({
     required this.label,
     required this.value,
     required this.icon,
@@ -360,7 +360,7 @@ class _StatItem extends StatelessWidget {
       children: [
         Icon(icon, size: 19, color: color),
 
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
 
         Text(
           '$value',
@@ -373,7 +373,7 @@ class _StatItem extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 7),
+        SizedBox(height: 7),
 
         Text(
           label,
@@ -395,7 +395,7 @@ class _StatItem extends StatelessWidget {
 // --------------------------------------------------
 
 class _TimelineMonth extends StatelessWidget {
-  const _TimelineMonth({required this.month, required this.records});
+  _TimelineMonth({required this.month, required this.records});
 
   final String month;
   final List<Attendance> records;
@@ -426,7 +426,7 @@ class _TimelineMonth extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 18),
+        SizedBox(height: 18),
 
         ...List.generate(records.length, (index) {
           return _TimelineEntry(
@@ -435,14 +435,14 @@ class _TimelineMonth extends StatelessWidget {
           );
         }),
 
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
       ],
     );
   }
 }
 
 class _TimelineEntry extends StatelessWidget {
-  const _TimelineEntry({required this.record, required this.isLast});
+  _TimelineEntry({required this.record, required this.isLast});
 
   final Attendance record;
   final bool isLast;
@@ -459,8 +459,8 @@ class _TimelineEntry extends StatelessWidget {
       final status = AttendancePolicy.status(AttendancePolicy.wib(createdAt));
 
       markerColor = status == AttendanceStatus.late
-          ? const Color(0xFFB77D55)
-          : const Color(0xFF78947B);
+          ? Color(0xFFB77D55)
+          : Color(0xFF78947B);
     }
 
     return IntrinsicHeight(
@@ -484,7 +484,7 @@ class _TimelineEntry extends StatelessWidget {
                   Expanded(
                     child: Container(
                       width: 2,
-                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      margin: EdgeInsets.symmetric(vertical: 5),
                       color: scheme.outlineVariant.withValues(alpha: 0.7),
                     ),
                   ),
@@ -492,11 +492,11 @@ class _TimelineEntry extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
 
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 16),
+              padding: EdgeInsets.only(bottom: 16),
               child: HistoryTile(record: record),
             ),
           ),

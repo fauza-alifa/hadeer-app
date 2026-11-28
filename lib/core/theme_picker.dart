@@ -21,14 +21,14 @@ class ThemePicker extends ConsumerWidget {
         } catch (_) {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 content: Text('Tampilan belum tersimpan. Coba lagi, ya.'),
               ),
             );
           }
         }
       },
-      offset: const Offset(0, 48),
+      offset: Offset(0, 48),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       color: scheme.surface,
       elevation: 4,
@@ -77,7 +77,7 @@ class ThemePicker extends ConsumerWidget {
 
     return PopupMenuItem<ThemeMode>(
       value: mode,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.symmetric(horizontal: 12),
       child: Builder(
         builder: (context) {
           final scheme = Theme.of(context).colorScheme;
@@ -99,7 +99,7 @@ class ThemePicker extends ConsumerWidget {
                   color: isSelected ? scheme.primary : scheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: Text(
                   label,

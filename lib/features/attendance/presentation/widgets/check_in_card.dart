@@ -37,11 +37,11 @@ class CheckInCard extends ConsumerWidget {
     final isCheckedIn = today != null;
 
     final buttonColor = isDark
-        ? (isCheckedIn ? const Color(0xFF78947B) : const Color(0xFFA8C5A9))
-        : (isCheckedIn ? const Color(0xFF78947B) : const Color(0xFF183D32));
+        ? (isCheckedIn ? Color(0xFF78947B) : Color(0xFFA8C5A9))
+        : (isCheckedIn ? Color(0xFF78947B) : Color(0xFF183D32));
 
     final buttonTextColor = isDark && !isCheckedIn
-        ? const Color(0xFF102A23)
+        ? Color(0xFF102A23)
         : Colors.white;
 
     return Column(
@@ -60,7 +60,7 @@ class CheckInCard extends ConsumerWidget {
           ),
         ),
 
-        const SizedBox(height: 18),
+        SizedBox(height: 18),
 
         Material(
           color: Colors.transparent,
@@ -70,13 +70,13 @@ class CheckInCard extends ConsumerWidget {
                 : () {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
-                        builder: (_) => const CapturePage(),
+                        builder: (_) => CapturePage(),
                       ),
                     );
                   },
             borderRadius: BorderRadius.circular(20),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 200),
               curve: Curves.easeInOut,
               width: 140,
               height: 140,
@@ -94,7 +94,7 @@ class CheckInCard extends ConsumerWidget {
                     size: 44,
                     color: buttonTextColor,
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Text(
                     isCheckedIn ? 'Checked-in' : 'Check-in',
                     style: TextStyle(
@@ -110,10 +110,10 @@ class CheckInCard extends ConsumerWidget {
         ),
 
         if (records.hasError) ...[
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           TextButton(
             onPressed: () => ref.invalidate(attendanceProvider),
-            child: const Text('Try again'),
+            child: Text('Try again'),
           ),
         ],
       ],

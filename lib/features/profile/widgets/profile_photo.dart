@@ -29,12 +29,12 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
 
           return AlertDialog(
             backgroundColor: isDark
-                ? const Color(0xFF1B332B)
-                : const Color(0xFFFAFBF9),
+                ? Color(0xFF1B332B)
+                : Color(0xFFFAFBF9),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18),
             ),
-            title: const Text(
+            title: Text(
               'Pakai foto ini?',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
@@ -45,11 +45,11 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Batal'),
+                child: Text('Batal'),
               ),
               FilledButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('Simpan'),
+                child: Text('Simpan'),
               ),
             ],
           );
@@ -62,7 +62,7 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
               'Foto profil belum tersimpan. Cek koneksi, lalu coba lagi.',
             ),
@@ -85,21 +85,21 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
     final scheme = Theme.of(context).colorScheme;
 
     final borderColor = isDark
-        ? const Color(0xFF53675B)
-        : const Color(0xFFD5DED2);
+        ? Color(0xFF53675B)
+        : Color(0xFFD5DED2);
 
     final avatarBackground = isDark
-        ? const Color(0xFF263F33)
-        : const Color(0xFFE8EEE5);
+        ? Color(0xFF263F33)
+        : Color(0xFFE8EEE5);
 
     final accentColor = isDark
-        ? const Color(0xFFA8C5A9)
-        : const Color(0xFF183D32);
+        ? Color(0xFFA8C5A9)
+        : Color(0xFF183D32);
 
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(4),
+          padding: EdgeInsets.all(4),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(color: borderColor, width: 2),
@@ -118,27 +118,27 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
           ),
         ),
 
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
 
         TextButton.icon(
           onPressed: busy || avatar.isLoading ? null : change,
           style: TextButton.styleFrom(
             foregroundColor: accentColor,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
           icon: busy
-              ? const SizedBox(
+              ? SizedBox(
                   width: 16,
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Icon(Icons.camera_alt_outlined, size: 17),
+              : Icon(Icons.camera_alt_outlined, size: 17),
           label: Text(
             busy ? 'Menyimpan…' : 'Ganti foto',
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
           ),
         ),
 

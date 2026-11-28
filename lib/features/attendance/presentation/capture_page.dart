@@ -64,7 +64,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
       Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sudah masuk! Absensimu tersimpan.')),
+        SnackBar(content: Text('Sudah masuk! Absensimu tersimpan.')),
       );
     } catch (_) {
       if (mounted) {
@@ -90,7 +90,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
       canPop: !busy,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
+          title: Text(
             'Check-in',
             style: TextStyle(
               fontSize: 18,
@@ -105,11 +105,11 @@ class _CapturePageState extends ConsumerState<CapturePage> {
             children: [
               Expanded(
                 child: ListView(
-                  padding: const EdgeInsets.fromLTRB(24, 12, 24, 20),
+                  padding: EdgeInsets.fromLTRB(24, 12, 24, 20),
                   children: [
-                    const CaptureIntro(),
+                    CaptureIntro(),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
 
                     Row(
                       children: [
@@ -122,17 +122,17 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                             color: scheme.onSurfaceVariant,
                           ),
                         ),
-                        const Spacer(),
+                        Spacer(),
                         if (photo != null)
                           Row(
                             children: [
                               Icon(
                                 Icons.check_circle_rounded,
                                 size: 14,
-                                color: const Color(0xFF78947B),
+                                color: Color(0xFF78947B),
                               ),
-                              const SizedBox(width: 5),
-                              const Text(
+                              SizedBox(width: 5),
+                              Text(
                                 'Foto siap',
                                 style: TextStyle(
                                   fontSize: 11,
@@ -145,7 +145,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                       ],
                     ),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
 
                     SurfaceCard(
                       padding: 10,
@@ -155,7 +155,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                       ),
                     ),
 
-                    const SizedBox(height: 14),
+                    SizedBox(height: 14),
 
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,7 +165,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                           size: 17,
                           color: scheme.onSurfaceVariant,
                         ),
-                        const SizedBox(width: 9),
+                        SizedBox(width: 9),
                         Expanded(
                           child: Text(
                             'Pastikan wajah terlihat jelas dan '
@@ -181,9 +181,9 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                     ),
 
                     if (error != null) ...[
-                      const SizedBox(height: 18),
+                      SizedBox(height: 18),
                       Container(
-                        padding: const EdgeInsets.all(13),
+                        padding: EdgeInsets.all(13),
                         decoration: BoxDecoration(
                           color: scheme.errorContainer.withValues(
                             alpha: dark ? 0.25 : 0.65,
@@ -198,7 +198,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                               color: scheme.error,
                               size: 19,
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: 10),
                             Expanded(
                               child: Text(
                                 error!,
@@ -218,7 +218,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
               ),
 
               Container(
-                padding: const EdgeInsets.fromLTRB(24, 16, 24, 18),
+                padding: EdgeInsets.fromLTRB(24, 16, 24, 18),
                 decoration: BoxDecoration(
                   color: scheme.surface,
                   border: Border(
@@ -256,7 +256,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
 
                     SizedBox(
                       width: double.infinity,
@@ -265,10 +265,10 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                         onPressed: busy || photo == null ? null : submit,
                         style: FilledButton.styleFrom(
                           backgroundColor: dark
-                              ? const Color(0xFFA8C5A9)
-                              : const Color(0xFF183D32),
+                              ? Color(0xFFA8C5A9)
+                              : Color(0xFF183D32),
                           foregroundColor: dark
-                              ? const Color(0xFF102A23)
+                              ? Color(0xFF102A23)
                               : Colors.white,
                           disabledBackgroundColor: scheme.onSurface.withValues(
                             alpha: 0.08,
@@ -281,7 +281,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                           ),
                         ),
                         child: busy
-                            ? const SizedBox(
+                            ? SizedBox(
                                 width: 19,
                                 height: 19,
                                 child: CircularProgressIndicator(
@@ -289,7 +289,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
                                   color: Colors.white,
                                 ),
                               )
-                            : const Text(
+                            : Text(
                                 'Kirim kehadiran',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,

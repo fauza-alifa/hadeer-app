@@ -18,33 +18,33 @@ class HomePage extends ConsumerWidget {
 
     return EnterMotion(
       child: ListView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24),
         children: [
-          const BrandHeader(),
+          BrandHeader(),
 
-          const SizedBox(height: 26),
+          SizedBox(height: 26),
 
           Text(
             'Hai, ${ref.watch(studentNameProvider).split(' ').first}.',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w600,
               letterSpacing: -.8,
             ),
           ),
 
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
 
           Text(
             'Sudah sampai? Absen dulu yuk!',
             style: TextStyle(color: scheme.onSurfaceVariant),
           ),
 
-          const SizedBox(height: 28),
+          SizedBox(height: 28),
 
-          const ClockCard(),
+          ClockCard(),
 
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
 
           // Check-in dan ringkasan absensi
           ref
@@ -54,19 +54,19 @@ class HomePage extends ConsumerWidget {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Expanded(flex: 5, child: CheckInCard()),
+                      Expanded(flex: 5, child: CheckInCard()),
 
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16),
 
                       Expanded(flex: 5, child: MonthSummary(items: items)),
                     ],
                   );
                 },
 
-                loading: () => const Center(child: LinearProgressIndicator()),
+                loading: () => Center(child: LinearProgressIndicator()),
 
                 error: (_, _) =>
-                    const Text('Catatan belum bisa dimuat. Cek koneksimu, ya.'),
+                    Text('Catatan belum bisa dimuat. Cek koneksimu, ya.'),
               ),
         ],
       ),

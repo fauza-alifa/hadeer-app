@@ -17,18 +17,18 @@ class HistoryTile extends ConsumerWidget {
     final scheme = Theme.of(context).colorScheme;
     final dark = Theme.of(context).brightness == Brightness.dark;
 
-    final date = record.createdAt?.toUtc().add(const Duration(hours: 7));
+    final date = record.createdAt?.toUtc().add(Duration(hours: 7));
 
     final isLate =
         record.createdAt != null &&
         AttendancePolicy.status(record.createdAt!) == AttendanceStatus.late;
 
     final statusColor = isLate
-        ? const Color(0xFFB77D55)
-        : const Color(0xFF78947B);
+        ? Color(0xFFB77D55)
+        : Color(0xFF78947B);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.only(bottom: 10),
       child: SurfaceCard(
         padding: 12,
         child: InkWell(
@@ -49,8 +49,8 @@ class HistoryTile extends ConsumerWidget {
                   color: dark
                       ? statusColor.withValues(alpha: 0.15)
                       : (isLate
-                            ? const Color(0xFFF3EAE2)
-                            : const Color(0xFFE8EEE5)),
+                            ? Color(0xFFF3EAE2)
+                            : Color(0xFFE8EEE5)),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -64,7 +64,7 @@ class HistoryTile extends ConsumerWidget {
                 ),
               ),
 
-              const SizedBox(width: 13),
+              SizedBox(width: 13),
 
               // Attendance details
               Expanded(
@@ -82,7 +82,7 @@ class HistoryTile extends ConsumerWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 5),
+                    SizedBox(height: 5),
 
                     Text(
                       date == null
@@ -97,7 +97,7 @@ class HistoryTile extends ConsumerWidget {
                 ),
               ),
 
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
 
               // Status and photo indicator
               Column(
@@ -114,7 +114,7 @@ class HistoryTile extends ConsumerWidget {
                           : statusColor,
                     ),
                   ),
-                  const SizedBox(height: 7),
+                  SizedBox(height: 7),
                   Icon(
                     Icons.photo_outlined,
                     size: 17,
@@ -131,7 +131,7 @@ class HistoryTile extends ConsumerWidget {
 }
 
 class PhotoDialog extends ConsumerWidget {
-  const PhotoDialog({super.key, required this.id});
+  PhotoDialog({super.key, required this.id});
 
   final String id;
 
@@ -143,7 +143,7 @@ class PhotoDialog extends ConsumerWidget {
       backgroundColor: scheme.surface,
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-      title: const Text(
+      title: Text(
         'Bukti kehadiran',
         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
       ),
@@ -154,16 +154,16 @@ class PhotoDialog extends ConsumerWidget {
               borderRadius: BorderRadius.circular(12),
               child: Image.memory(bytes, fit: BoxFit.contain),
             ),
-            loading: () => const SizedBox(
+            loading: () => SizedBox(
               height: 150,
               child: Center(child: CircularProgressIndicator()),
             ),
-            error: (_, _) => const Text('Foto belum dapat dimuat.'),
+            error: (_, _) => Text('Foto belum dapat dimuat.'),
           ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Tutup'),
+          child: Text('Tutup'),
         ),
       ],
     );

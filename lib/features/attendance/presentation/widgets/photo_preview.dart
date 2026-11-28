@@ -13,13 +13,9 @@ class PhotoPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final placeholderColor = isDark
-        ? const Color(0xFF263F33)
-        : const Color(0xFFE8EEE5);
+    final placeholderColor = isDark ? Color(0xFF263F33) : Color(0xFFE8EEE5);
 
-    final iconColor = isDark
-        ? const Color(0xFFA8C5A9)
-        : const Color(0xFF78947B);
+    final iconColor = isDark ? Color(0xFFA8C5A9) : Color(0xFF78947B);
 
     final textColor = Theme.of(context).colorScheme.onSurfaceVariant;
 
@@ -54,7 +50,7 @@ class PhotoPreview extends StatelessWidget {
                           color: iconColor,
                         ),
                       ),
-                      const SizedBox(height: 18),
+                      SizedBox(height: 18),
                       Text(
                         'Foto kehadiranmu',
                         style: TextStyle(
@@ -63,7 +59,7 @@ class PhotoPreview extends StatelessWidget {
                           color: textColor,
                         ),
                       ),
-                      const SizedBox(height: 5),
+                      SizedBox(height: 5),
                       Text(
                         'Pratinjau foto akan muncul di sini',
                         style: TextStyle(

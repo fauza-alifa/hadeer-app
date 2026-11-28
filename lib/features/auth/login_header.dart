@@ -17,9 +17,9 @@ class LoginHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Hadeer Logo
-            const HadeerMark(size: 76),
+            HadeerMark(size: 76),
 
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
 
             // Brand Name
             Text(
@@ -35,7 +35,7 @@ class LoginHeader extends StatelessWidget {
           ],
         ),
 
-        const SizedBox(height: 32),
+        SizedBox(height: 32),
 
         // Welcome Title
         Text(
@@ -50,7 +50,7 @@ class LoginHeader extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
 
         // Description
         Text(
@@ -63,7 +63,7 @@ class LoginHeader extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 28),
+        SizedBox(height: 28),
       ],
     );
   }
