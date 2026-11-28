@@ -1,6 +1,6 @@
 name: hadeer_app
 description: "Student attendance with Riverpod and Firebase."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -26,14 +26,27 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^6.0.0
-
+  flutter_native_splash: ^2.4.6
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
-
   uses-material-design: true
   assets:
     - assets/brand/hadeer.png
 
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/hadeer_icon.png"
+  adaptive_icon_background: "#F4F1E8"
+  adaptive_icon_foreground: "assets/images/hadeer_icon_foreground.png"
 
+flutter_native_splash:
+  color: "#F4F1E8"
+  image: assets/images/hadeer_logo.png
+  android: true
+  ios: false
 
-
+  android_12:
+    color: "#F4F1E8"
+    image: assets/images/hadeer_logo.png
