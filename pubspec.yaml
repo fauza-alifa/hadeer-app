@@ -37,16 +37,16 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: false
-  image_path: "assets/images/hadeer_icon.png"
-  adaptive_icon_background: "#F4F1E8"
-  adaptive_icon_foreground: "assets/images/hadeer_icon_foreground.png"
+  image_path: "assets/brand/hadeer.png"
+  adaptive_icon_background: "#183D32"
+  adaptive_icon_foreground: "assets/brand/hadeer.png"
 
 flutter_native_splash:
-  color: "#F4F1E8"
-  image: assets/images/hadeer_logo.png
+  color: "#183D32"
+  image: "assets/brand/hadeer.png"
   android: true
   ios: false
 
   android_12:
-    color: "#F4F1E8"
-    image: assets/images/hadeer_logo.png
+    color: "#183D32"
+    image: "assets/brand/hadeer.png"
